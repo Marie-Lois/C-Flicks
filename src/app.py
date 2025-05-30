@@ -33,6 +33,13 @@ def get_all_movies():
     return jsonify([movie.to_json() for movie in movies])
 
 
+@app.route("/all-movies/<movie_genre>")
+def get_movies_by_genre(movie_genre):
+    movies = All_movies.query.filter(All_movies.genre.ilike(f"%{movie_genre}%")).all()
+    return jsonify([movie.to_json() for movie in movies])
+    return movie.to_json()
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
