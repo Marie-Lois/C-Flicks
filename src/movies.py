@@ -1,7 +1,10 @@
 import requests
+from dotenv import load_dotenv
 from app import app, db, All_movies
+import os
 
-API_KEY = "d813f52a"
+load_dotenv()
+API_KEY = os.getenv"d813f52a"
 BASE_URL = "http://www.omdbapi.com/"
 
 

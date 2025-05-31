@@ -1,12 +1,13 @@
 import requests
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:lois@localhost/C-Flicks"
 db = SQLAlchemy(app)
 
-
+load_dotenv()
 class All_movies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movie_name = db.Column(db.String(100), nullable=False)
