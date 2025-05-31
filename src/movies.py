@@ -4,7 +4,19 @@ from app import app, db, All_movies
 import os
 
 load_dotenv()
-API_KEY = os.getenv"d813f52a"
+API_KEY = os.getenv("DATABASE_URL")
+
+BASE_URL = "http://www.omdbapi.com/"
+
+
+import requests
+from dotenv import load_dotenv
+from app import app, db, All_movies
+import os
+
+load_dotenv()
+API_KEY = os.getenv("DATABASE_URL")
+
 BASE_URL = "http://www.omdbapi.com/"
 
 
@@ -39,67 +51,21 @@ def add_movie(title_query):
 if __name__ == "__main__":
     with app.app_context():
         movies = [
-            "Prisoners",
-            "Sicario",
-            "Wind River",
-            "The Revenant",
-            "Birdman",
-            "Whiplash",
-            "La La Land",
-            "Drive",
-            "Nightcrawler",
-            "Gone Girl",
-            "The Girl with the Dragon Tattoo",
-            "The Curious Case of Benjamin Button",
-            "The Social Network",
-            "Moneyball",
-            "Spotlight",
-            "The Big Short",
-            "The Post",
-            "Bridge of Spies",
-            "The King's Speech",
-            "Darkest Hour",
-            "12 Years a Slave",
-            "Argo",
-            "Lincoln",
-            "The Imitation Game",
-            "Bohemian Rhapsody",
-            "Rocketman",
-            "A Beautiful Mind",
-            "Cast Away",
-            "The Terminal",
-            "Catch Me If You Can",
-            "The Green Mile",
-            "The Pursuit of Happyness",
-            "Seven Pounds",
-            "Enemy of the State",
-            "I Am Legend",
-            "Independence Day",
-            "Hitch",
-            "Focus",
-            "Men in Black",
-            "Men in Black II",
-            "Men in Black III",
-            "Kingsman: The Secret Service",
-            "Kingsman: The Golden Circle",
-            "The Gentlemen",
-            "Snatch",
-            "Lock, Stock and Two Smoking Barrels",
-            "RocknRolla",
-            "Sherlock Holmes",
-            "Sherlock Holmes: A Game of Shadows",
-            "1917",
-            "Dunkirk",
-            "Hacksaw Ridge",
-            "Fury",
-            "Pearl Harbor",
-            "Enemy at the Gates",
-            "The Book Thief",
-            "The Pianist",
-            "Life Is Beautiful",
-            "Hotel Rwanda",
-            "Slumdog Millionaire",
-        ]
+            "wonder woman",
+            "the dark knight",
+            ]
+
+        for movie in movies:
+            add_movie(movie)
+
+
+
+if __name__ == "__main__":
+    with app.app_context():
+        movies = [
+            "wonder woman",
+            "the dark knight",
+            ]
 
         for movie in movies:
             add_movie(movie)
