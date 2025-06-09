@@ -1,0 +1,261 @@
+openapi: 3.0.4
+info:
+  title: C-flicks Movie app 3.0
+  description: |-
+    C-Flicks is a vibrant digital platform dedicated to showcasing the rich and diverse culture of Cameroon through the power of film. From captivating stories rooted in tradition to bold contemporary narratives, C-Flicks brings together a curated collection of Cameroonian movies that celebrate our heritage, creativity, and voices. Whether you're rediscovering local classics or exploring the next wave of cinematic talent, C-Flicks is your go-to destination for authentic Cameroonian storytelling.
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.12
+externalDocs:
+  description: Find out more about C-flicks
+  url: https://c-flicks.com
+servers:
+  - url: https://c-flicks.onrender.com
+tags:
+  - name: Movies
+    description: Everything about your Cameroonian movies
+  - name: user
+    description: Operations about user
+
+paths:
+  /users/sign_up:
+    post:
+      tags:
+        - user
+      summary: Register a new user
+      description: |
+        Registers a new user by accepting a username, email, and password. 
+        Returns a success message and user data upon successful registration. 
+        Ensures username or email is not already in use.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Username or email already exists, or missing required fields
+
+  /users/login:
+    post:
+      tags:
+        - user
+      summary: User login
+      description: |
+        Authenticates a user using a provided username and password. 
+        Returns user details if credentials are valid. Returns an error if authentication fails.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Missing username or password
+        '401':
+          description: Invalid username or password
+
+  /all-movies:
+    get:
+      tags:
+        - Movies
+      summary: Get all movies
+      description: |
+        Retrieves a list of all movies available in the database.
+        Returns each movie with details such as title, genre, release year, and thumbnail.
+      responses:
+        '200':
+          description: A list of all movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+  /all-movies/genre/{movie_genre}:
+    get:
+      tags:
+        - Movies
+      summary: Get movies by genre
+      description: |
+        Returns a list of movies filtered by a single genre.
+        The genre match is case-insensitive and supports partial matches.
+      parameters:
+        - in: path
+          name: movie_genre
+          required: true
+          schema:
+            type: string
+          description: Genre to filter movies by
+      responses:
+        '200':
+          description: Movies matching the genre
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+  /all-movies/genres/{genres}:
+    get:
+      tags:
+        - Movies
+      summary: Get movies by multiple genres
+      description: |
+        Returns movies that match any of the genres provided.
+        Accepts a comma-separated list of genres. Matches are case-insensitive.
+      parameters:
+        - in: path
+          name: genres
+          required: true
+          schema:
+            type: string
+          description: Comma-separated genres (e.g. drama,comedy)
+      responses:
+        '200':
+          description: Movies matching any of the genres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+  /all-movies/year/{year_release}:
+    get:
+      tags:
+        - Movies
+      summary: Get movies by release year
+      description: |
+        Retrieves all movies that were released in the specified year.
+      parameters:
+        - in: path
+          name: year_release
+          required: true
+          schema:
+            type: string
+            example: "2022"
+          description: Release year of the movies
+      responses:
+        '200':
+          description: Movies released in the specified year
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+  /all-movies/search/{movie_name}:
+    get:
+      tags:
+        - Movies
+      summary: Search movies by name
+      description: |
+        Searches for movies by name. Returns all movies whose titles
+        contain the provided keyword. The search is case-insensitive.
+      parameters:
+        - in: path
+          name: movie_name
+          required: true
+          schema:
+            type: string
+          description: The name or keyword to search for in movie titles
+      responses:
+        '200':
+          description: Movies matching the search query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+components:
+  schemas:
+    UserInput:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          example: johndoe@example.com
+        password:
+          type: string
+          format: password
+          example: mysecurepassword
+
+    LoginInput:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: johndoe
+        password:
+          type: string
+          format: password
+          example: mysecurepassword
+
+    UserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Login successful
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            username:
+              type: string
+              example: johndoe
+            email:
+              type: string
+              example: johndoe@example.com
+
+    Movie:
+      type: object
+      properties:
+        movie_name:
+          type: string
+          example: The Fisherman's Diary
+        genre:
+          type: string
+          example: Drama
+        year:
+          type: string
+          example: "2020"
+        thumbnail:
+          type: string
+          example: https://image.tmdb.org/t/p/w500/sample.jpg
