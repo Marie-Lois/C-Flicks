@@ -34,9 +34,8 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     #    'additionalQueryStringParams': {'test': "hello"}
     # }
 )
-app.register_blueprint(swaggerui_blueprint)
 
-app.run()
+# app.run()
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:lois@localhost/C-Flicks"
 db = SQLAlchemy(app)
@@ -259,10 +258,12 @@ if __name__ == "__main__":
 
         for movie in movies:
             add_movie(movie)
+    app.register_blueprint(swaggerui_blueprint)
+
     app.run(debug=True)
 
 
 # @app.route("/task/display/<int:id>")
 # def display_one_task(id):
 #     one_task = Task.query.filter_by(id=id).first_or_404()
-#     return one_task.to_json()
+#     return one_task.to_json(
