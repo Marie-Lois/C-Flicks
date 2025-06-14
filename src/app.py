@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from dotenv import load_dotenv
 import os
 
