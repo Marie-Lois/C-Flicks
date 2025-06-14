@@ -1,38 +1,26 @@
-import requests
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash, check_password_hash
-from flasgger import Swagger
 from flask_swagger_ui import get_swaggerui_blueprint
+from dotenv import load_dotenv
 import os
 
 
 load_dotenv()
 
-app = Flask(__name__)
-swagger = Swagger(app)
+app = Flask(__name__, static_folder="static")
 CORS(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-SWAGGER_URL = "/api/docs"  # URL for exposing Swagger UI (without trailing '/')
+SWAGGER_URL = "/docs"  # URL for exposing Swagger UI (without trailing '/')
 API_URL = "/static/swagger.json"  # Our API url (can of course be a local resource)
 
-# API_URL = "http://petstore.swagger.io/v2/swagger.json"  # Our API url (can of course be a local resource)
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
     API_URL,
     config={"app_name": "Test application"},  # Swagger UI config overrides
-    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
-    #    'clientId': "your-client-id",
-    #    'clientSecret': "your-client-secret-if-required",
-    #    'realm': "your-realms",
-    #    'appName': "your-app-name",
-    #    'scopeSeparator': " ",
-    #    'additionalQueryStringParams': {'test': "hello"}
-    # }
+   
 )
 
 # app.run()
@@ -209,6 +197,9 @@ def get_movie_by_name(movie_name):
     print(f"Searching for movies with name: {movie_name}")
 
 
+app.register_blueprint(swaggerui_blueprint)
+
+
 if __name__ == "__main__":
 
     with app.app_context():
@@ -258,7 +249,6 @@ if __name__ == "__main__":
 
         for movie in movies:
             add_movie(movie)
-    app.register_blueprint(swaggerui_blueprint)
 
     app.run(debug=True)
 
