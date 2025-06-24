@@ -8,6 +8,8 @@ C-Flicks is a web application built with Flask that showcases and celebrates Cam
 
 C-Flicks provides users with a rich collection of movies tied to Cameroonian stories, themes, and talent. The platform highlights genres, features poster thumbnails, and lets users explore all available films.
 
+API Documention Link: https://c-flicks.onrender.com/docs/
+
 ---
 
 ## 🚀 Features
